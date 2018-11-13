@@ -1,0 +1,234 @@
+\documentclass[table, 13pt, slidestop,compress,mathserif]{beamer} 
+% \documentclass[table, t, 13pt]{beamer}
+
+% if use xelatex, use the following lines before lualatex
+\usepackage{xeCJK,fontspec,xunicode,xltxtra, fancybox}
+\setCJKmainfont{FZLanTingHei-L-GBK} %方正字体，也可以改成：微软雅黑
+\setCJKfamilyfont{FZHeiR}{FZLanTingHeiS-R-GB}  
+\setCJKsansfont{FZLanTingHeiS-EL-GB} 
+\setCJKmonofont{Consolas}
+
+% if use lualatex, use the following two lines.
+%\usepackage{luatexja-fontspec}
+%\setmainjfont{FZLanTingHei-L-GBK}
+
+\setsansfont[Mapping=tex-text,LetterSpace=-1.25]{Ubuntu Light}
+\setmonofont[Color=00663300]{Ubuntu Light}
+
+%box tools
+\usepackage{framed, xcolor} 
+\usepackage{tabularx, colortbl, booktabs, multirow, makecell, longtable}
+\usepackage{animate}
+
+\usepackage{soul} %for strikeout
+
+\usepackage{amsmath, amsfonts, amssymb} %amssymb for varnothing symbol
+\usepackage{blkarray} % support complicated matrix
+%\usepackage[thicklines]{cancel} %公式中通过斜线删除部分内容
+\usepackage[b]{esvect} %vector
+
+\usepackage{tcolorbox}
+\tcbset{colback=white,colframe=orange!60,fonttitle=\bfseries,
+coltitle=black}
+
+\usepackage{caption, algorithm}
+\usepackage[noend]{algpseudocode}
+
+\usepackage{textpos}
+\usepackage{adjustbox} %调整大小，例如缩放tikz绘图结果
+
+\usepackage{pgfplots}
+\usepackage{tikz, flowchart,times} % tikz绘图
+\usepackage{smartdiagram}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{calc, arrows, arrows.meta, shapes,snakes, shapes.geometric, positioning}
+\usetikzlibrary{topaths}
+\usetikzlibrary{mindmap, backgrounds}
+\usetikzlibrary{shadings}
+\usetikzlibrary{shadows}
+\usetikzlibrary{graphs}
+\usetikzlibrary{matrix}
+
+\usepackage{tkz-graph}
+\usepackage{forest}
+\forestset{
+  default preamble={
+    for tree={circle,draw}
+  },
+  gappy tree/.style={
+    for tree={
+      circle,
+      draw,
+      s sep'+=10pt,
+      fit=band,
+    },
+  },
+  missed/.style={draw=none, no edge}
+}
+
+\usepackage{environ}
+\NewEnviron{tikzthm}[1]{
+\begin{tikzpicture}
+\node [newthemsty] (box){\BODY};
+\node[newthemstytitle, right=10pt] at (box.north west) {\textbf{#1}};
+\end{tikzpicture}
+}
+
+% 新建幻灯片每一小节开始的样式环境
+\NewEnviron{sectionbox}[1]{
+  \begin{center}
+    \tikzstyle{mybox} = [draw=blue, fill=green!20, very thick,
+    rectangle, rounded corners, inner sep=10pt, inner ysep=20pt]
+    \tikzstyle{fancytitle} =[fill=blue, text=white, ellipse]
+    
+    \vspace{1.0cm}
+    \begin{tikzpicture}[transform shape, rotate=0, baseline=-3.5cm]
+      \node [mybox] (box) {%
+        \begin{minipage}[t!]{0.75\textwidth}
+          \BODY
+        \end{minipage}
+      };
+      \node[fancytitle] at (box.north) {#1};
+    \end{tikzpicture}
+  \end{center}
+}%结束部分定义
+
+\NewEnviron{outlinebox}[1]{
+   \tikzstyle{mybox} = [draw=red, fill=blue!5, very thick,
+  rectangle, rounded corners, inner sep=10pt, inner ysep=20pt]
+  \tikzstyle{fancytitle} =[fill=red, text=white]
+  \begin{center}
+    \begin{tikzpicture}
+      \node [mybox] (box){%
+        \begin{minipage}{0.80\textwidth}
+          \BODY
+        \end{minipage}
+      };
+      \node[fancytitle, right=10pt] at (box.north west) { #1 };
+    \end{tikzpicture}
+  \end{center}
+}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+
+\NewEnviron{infobox}[1]{
+  \begin{center}
+    \begin{tcolorbox}[width=0.9\textwidth, title={#1},enhanced, colframe=red,colback=white,
+      arc=1mm,colbacktitle=red!10,
+      fonttitle=\bfseries,coltitle=black,
+      attach boxed title to top left=
+      {xshift=3.2mm,yshift=-0.50mm},
+      boxed title style={skin=enhancedfirst jigsaw,
+        size=small,arc=1mm,bottom=-1mm,
+        interior style={fill=none,
+          top color=red!30!white,
+          bottom color=red!20!white}}]
+      \BODY
+    \end{tcolorbox}
+  \end{center}
+}
+
+
+\usepackage{minted} %compile： lualatex/xelatex -shell-escape spark.tex
+\setminted{encoding=utf-8} %注意字体，如果设置了CJKmonofont，会出现乱码
+\usemintedstyle{tango}
+
+%\usepackage[outputdir={tempdot/}]{dot2texi}
+
+\usetheme{Madrid} 
+\usecolortheme{crane} 
+
+\setbeamertemplate{items}[ball] 
+\setbeamertemplate{blocks}[rounded][shadow=true] 
+
+\usefonttheme[onlymath]{serif}
+
+%\definecolor{red(ncs)}{rgb}{0.77, 0.01, 0.2}
+%\definecolor{champagne}{rgb}{0.97, 0.91, 0.81}
+\definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
+\definecolor{vanilla}{rgb}{0.95, 0.9, 0.67}
+
+\usepackage[ampersand]{easylist}
+\newcommand\easyitem{\ListProperties(Hide=100, Hang=true, Progressive=3ex,
+  Style*=\color{orange}$\bullet$ ,
+  Style2*=\color{orange}$\ast$ ,
+  Style3*=\color{orange}$\circ$ ,
+  Style4*=\tiny$\blacksquare$, Space=-.5em, Space*=-.5em)}
+
+\setbeamertemplate{itemize item}{\color{orange}$\bullet$}
+\setbeamertemplate{itemize subitem}{\tiny\raise1.5pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+\setbeamertemplate{itemize subsubitem}{\tiny\raise1.5pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+\setbeamertemplate{enumerate item}{\insertenumlabel.}
+\setbeamertemplate{enumerate subitem}{\insertenumlabel.\insertsubenumlabel}
+\setbeamertemplate{enumerate subsubitem}{\insertenumlabel.\insertsubenumlabel.\insertsubsubenumlabel}
+\setbeamertemplate{enumerate mini template}{\insertenumlabel}
+
+\parskip=3mm
+\parindent=15pt
+\linespread{1.2}
+
+%自定义的一些命令，方便使用
+\newcommand*\circled[2][black]{\tikz[baseline=(char.base)]{
+  \node[shape=circle,draw=#1,inner sep=1.5pt] (char) {#2};}}
+
+\newcommand{\cjkbold}{\color[rgb]{0.29, 0.0, 0.51} \CJKfamily{FZHei}}  %http://latexcolor.com/
+
+\newcommand{\cjkem}{\CJKfamily{FZHeiR}} 
+\renewcommand{\em}[1]{\color{red} #1}
+
+%\XeTeXlinebreaklocale "zh"  
+%\XeTeXlinebreakskip = 0pt plus 1pt 
+
+\hypersetup{
+  pdftitle={Data Structure},
+  pdfsubject={Data Structure},
+  pdfkeywords={Data Structure},
+  pdfproducer={LaTeX},
+  pdfcreator={XeLaTeX}
+}
+
+\setbeamercolor{title}{fg=coolblack, bg=orange!30}
+\setbeamercolor{frametitle}{fg=coolblack, bg=vanilla!0}
+
+\setbeamercolor{palette primary}{fg=black, bg=gray!15!white}
+\setbeamercolor{palette secondary}{fg=black, bg=gray!10!white}
+\setbeamercolor{palette tertiary}{fg=black, bg=gray!15!white}
+
+\addtobeamertemplate{frametitle}{}{%
+\begin{textblock*}{1.0\paperwidth}(-.001\textwidth,0cm)
+%\tikz{\draw[orange!70!yellow, line width=1.2] (-1cm,0cm) -- (0.5\textwidth,0cm);\draw[orange!70!yellow,yshift=-0.5] (0.5\textwidth,0cm) -- (0.7\textwidth,0cm);}
+\end{textblock*}
+\begin{textblock*}{100mm}(.85\textwidth,-1cm)
+\includegraphics[height=1.2cm,width=1.2cm]{ruc_logo.png}
+\end{textblock*}
+}
+
+%gets rid of bottom navigation bars
+\setbeamertemplate{footline}[page number]{}
+
+%gets rid of navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+\begin{document}
+
+% \logo{\includegraphics[width=1.0cm,height=1.0cm]{figure/ruc.jpg}}
+\title{Deep Learning}
+\author{Xia Tian \\ Email: xiat(at)ruc.edu.cn }
+\institute{Renmin University of China }
+\date{
+  % \today{}
+}
+% \date[\initclock\tdtime]{\today}  
+\frame{\titlepage}
+
+\input{reinforcement}
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
